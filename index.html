@@ -33,8 +33,9 @@
     .section-title{font-family:'Playfair Display',serif;font-size:clamp(1.9rem,3.5vw,2.6rem);font-weight:700;color:var(--text);margin-bottom:14px;line-height:1.2;}
     .section-sub{font-size:1rem;color:var(--text-muted);max-width:560px;margin-bottom:52px;}
     .divider{width:48px;height:3px;background:var(--accent);border-radius:2px;margin:14px 0 48px;}
-    .reveal{opacity:0;transform:translateY(32px);transition:opacity .65s ease,transform .65s ease;}
-    .reveal.visible{opacity:1;transform:none;}
+    .reveal{opacity:1;transform:none;transition:opacity .65s ease,transform .65s ease;}
+    .js-loaded .reveal{opacity:0;transform:translateY(32px);}
+    .js-loaded .reveal.visible{opacity:1;transform:none;}
     #hero{min-height:100vh;display:flex;align-items:center;justify-content:center;padding:100px 40px 60px;position:relative;overflow:hidden;}
     .hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 50% at 70% 50%,rgba(245,197,24,.07) 0%,transparent 70%),radial-gradient(ellipse 40% 40% at 20% 80%,rgba(245,197,24,.04) 0%,transparent 60%);}
     .hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:60px 60px;opacity:.35;mask-image:radial-gradient(ellipse 80% 80% at 50% 50%,black 40%,transparent 100%);}
@@ -199,7 +200,7 @@
         <p class="about-bio">I specialize in <strong>full-stack web development</strong> — crafting responsive frontends with HTML, CSS & JavaScript, and powering them with <strong>Python FastAPI</strong> and <strong>MySQL</strong> backends. I enjoy clean architecture, secure APIs, and making things work end-to-end.</p>
         <p class="about-bio">Alongside coding, I bring strong <strong>project management, communication, and leadership</strong> skills. I'm currently seeking an attachment opportunity to grow in a professional environment. Fluent in both <strong>English and Swahili</strong>.</p>
         <div class="stats-row">
-          <div class="stat-card"><div class="stat-num">2+</div><div class="stat-lbl">Projects Built</div></div>
+          <div class="stat-card"><div class="stat-num">3+</div><div class="stat-lbl">Projects Built</div></div>
           <div class="stat-card"><div class="stat-num">10+</div><div class="stat-lbl">Technologies</div></div>
           <div class="stat-card"><div class="stat-num">3+</div><div class="stat-lbl">Years IT Exp.</div></div>
         </div>
@@ -368,6 +369,25 @@
           </div>
         </div>
       </div>
+      <div class="project-card">
+        <div class="project-thumb">
+          <div class="thumb-bg" style="background:linear-gradient(135deg,#0d001a,#1a0030);"></div>
+          <div class="thumb-emoji">🤖</div>
+        </div>
+        <div class="project-body">
+          <div class="tag-row">
+            <span class="tag">AI</span><span class="tag">JavaScript</span>
+            <span class="tag">Resume</span><span class="tag">NLP</span>
+          </div>
+          <div class="project-name">ResumeAI</div>
+          <p class="project-desc">An AI-powered resume builder and analyser that helps users craft professional, job-ready CVs. Leverages intelligent suggestions to tailor content, highlight key skills, and improve overall resume quality in seconds.</p>
+          <div class="proj-btns">
+            <a href="https://resumeai-6fr.pages.dev/" target="_blank" rel="noopener" class="pbtn pbtn-gold">Live Demo</a>
+            <a href="https://github.com/Simpleskyline" target="_blank" rel="noopener" class="pbtn pbtn-ghost">GitHub</a>
+          </div>
+        </div>
+      </div>
+
       <div class="project-card" style="border-style:dashed;opacity:.55;">
         <div class="project-thumb">
           <div class="thumb-bg" style="background:var(--bg3);"></div>
@@ -405,7 +425,7 @@
         </div>
         <div class="contact-item">
           <div class="c-icon">✉️</div>
-          <div><div class="c-lbl">Email</div><div class="c-val"><a href="mailto:telvintran@gmail.com" style="color:var(--accent);">telvintran@gmail.com</a></div></div>
+          <div><div class="c-lbl">Email</div><div class="c-val"><a href="/cdn-cgi/l/email-protection#3642535a405f584244575876515b575f5a1855595b" style="color:var(--accent);"><span class="__cf_email__" data-cfemail="295d4c455f40475d5b4847694e44484045074a4644">[email&#160;protected]</span></a></div></div>
         </div>
         <div class="contact-item">
           <div class="c-icon">🐙</div>
@@ -458,13 +478,14 @@
 
 <div class="toast" id="toast"></div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   const themeBtn = document.getElementById('themeBtn');
   function applyTheme(t){document.documentElement.setAttribute('data-theme',t);localStorage.setItem('pf_theme',t);themeBtn.textContent=t==='dark'?'☀️ Light':'🌙 Dark';}
   applyTheme(localStorage.getItem('pf_theme')||'dark');
   themeBtn.addEventListener('click',()=>applyTheme(document.documentElement.getAttribute('data-theme')==='dark'?'light':'dark'));
   document.getElementById('hamburger').addEventListener('click',()=>document.getElementById('nav').classList.toggle('open'));
   document.querySelectorAll('.nav-links a').forEach(a=>a.addEventListener('click',()=>document.getElementById('nav').classList.remove('open')));
+  document.body.classList.add('js-loaded');
   const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting)e.target.classList.add('visible');}),{threshold:0.1});
   document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
   const sections=document.querySelectorAll('section[id]');
@@ -477,10 +498,5 @@
     const subject=document.getElementById('cf-subject').value.trim();
     const message=document.getElementById('cf-message').value.trim();
     if(!name||!email||!subject||!message){showToast('⚠️ Please fill all fields');return;}
-    window.location.href=`mailto:telvintran@gmail.com?subject=${encodeURIComponent(subject+' — from '+name)}&body=${encodeURIComponent('Name: '+name+'\nEmail: '+email+'\n\n'+message)}`;
-    showToast('✅ Opening your email client…');
-    this.reset();
-  });
-</script>
-</body>
-</html>
+    window.location.href=`mailto:telvintran@gmail.com?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(`From: ${name} <${email}>\n\n${message}`)}`;
+    })
